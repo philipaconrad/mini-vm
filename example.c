@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------
-// example.c -- An example VM with a stack and block-allocated heap.
+// example.c -- A simple VM with 4 instructions.
 // Copyright (C) Philip Conrad 4/30/2013 @ 3:56 PM -- New BSD License
 //
 //-----------------------------------------------------------------------------
@@ -55,8 +55,9 @@ void initRegs(Reg* regs, uint32 numRegs) {
 }
 
 //STARTER SCRIPT:
-//Loads the value 5 into r3, prints it out on the command line, and then exits by setting r2 to 1.
-//                 |load '+' into r[2].      |print contents of r[2]. |set r[1].value to 1     |pad.
+//Loads the value 43 ('+' in ASCII) into R2, prints it out on the command line, 
+//and then exits by setting R1 to 1.
+//                 |load '+' into R2.        |print contents of R2.   |set R1.value to 1.      |pad.
 //$ python bc.py '[(1,0),(1,2),(1,43),(1,0), (1,3),(1,2),(1,0),(1,0), (1,0),(1,1),(1,1),(1,0), (4,0)]' > bytecode.txt
 int main(int argc, char** argv) {
     //local variables:
