@@ -1,0 +1,115 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Mini-vm by philipaconrad</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/main.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+
+      <header>
+        <h1>Mini-vm</h1>
+        <p>A small, register-based virtual machine (bytecode interpreter) in C.</p>
+      </header>
+
+      <div id="banner">
+        <span id="logo"></span>
+
+        <a href="https://github.com/philipaconrad/mini-vm" class="button fork"><strong>View On GitHub</strong></a>
+        <div class="downloads">
+          <span>Downloads:</span>
+          <ul>
+            <li><a href="https://github.com/philipaconrad/mini-vm/zipball/master" class="button">ZIP</a></li>
+            <li><a href="https://github.com/philipaconrad/mini-vm/tarball/master" class="button">TAR</a></li>
+          </ul>
+        </div>
+      </div><!-- end banner -->
+
+    <div class="wrapper">
+      <nav>
+        <ul></ul>
+      </nav>
+      <section>
+        <h3>A small vm for small projects</h3>
+
+<p>Mini-vm is a small (~300 SLOC) bytecode interpreter meant to be used as a starting point for home-made interpreted languages.</p>
+
+<hr><h3>How it works:</h3>
+
+<ul>
+<li>Each instruction has to be of the same 3-address format.</li>
+<li>The VM has a dispatch table of function pointers that all have the same signature.</li>
+<li>When the instruction is processed, its Instruction ID serves as an index into that dispatch table.</li>
+<li>The instruction runs on the provided data, changes state where required, etc.</li>
+</ul><h3>How the virtual machine is built:</h3>
+
+<ul>
+<li>The interpreter is a register-based machine, with a static number of registers set at compile time. <em>(can't exceed 255, due to bytecode format)</em>
+</li>
+<li>The compiler for the VM is provided by the programmer.</li>
+<li>Semantics of instructions are also left up to the programmer.</li>
+<li>The VM only covers handling registers and instruction execution. It doesn't even try to address concurrency, stack ops, etc.</li>
+</ul><h3>Instruction Format:</h3>
+
+<p>Each instruction consists of 4 bytes, stored in little-endian byte order:</p>
+
+<pre><code>  0   1   2   3
++---+---+---+---+
+| A | B | C | D |
++---+---+---+---+
+</code></pre>
+
+<ul>
+<li>A - <strong>Instruction ID.</strong> This is the index of the function in the function table you wish to call.</li>
+<li>B - <strong>Register #1.</strong> (usually the destination register)</li>
+<li>C - <strong>Register #2.</strong> (usually an argument source register)</li>
+<li>D - <strong>Register #3.</strong> (usually an argument source register)</li>
+</ul><hr><h3>Get:</h3>
+
+<pre><code>$ git clone https://github.com/philipaconrad/mini-vm.git
+</code></pre>
+
+<h3>Build:</h3>
+
+<ul>
+<li>
+<p><strong>Linux-likes:</strong>
+If you're using a Linux-like platform (or Cygwin), try:</p>
+
+<pre><code>$ make install
+</code></pre>
+
+<p>to build the Mini-vm example program <em>(Note that you'll have to generate the bytecode first. Look in the <code>/tools</code> folder for a script to help with that)</em>.</p>
+</li>
+<li><p><strong>Windows:</strong>
+If you're on a modern Windows platform and have MSVC 2010 installed, just go to the <code>/msvc</code> directory and double click on the <strong>.vcxproj</strong> file. MSVC should generate a solution file for you, all set up and ready to build.</p></li>
+</ul><hr><h3>License</h3>
+
+<p>Mini-vm is under the liberal <a href="http://opensource.org/licenses/MIT">MIT License</a>, so hack away!</p>
+
+<h3>Authors and Contributors</h3>
+
+<p>Currently, Mini-vm is maintained by <a href="https://github.com/philipaconrad" class="user-mention">@philipaconrad</a>. If you'd like to contribute, just make a pull request.</p>
+
+<h3>Support or Contact</h3>
+
+<p>Having trouble with Mini-vm? Check out the <a href="https://github.com/philipaconrad/mini-vm/issues">issues page</a> and we’ll help you sort it out.</p>
+      </section>
+      <footer>
+        <p>Project maintained by <a href="https://github.com/philipaconrad">philipaconrad</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
+</html>
