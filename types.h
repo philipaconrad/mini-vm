@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------
 // types.h -- Basic typedefs for the vm.
-// Copyright (C) Philip Conrad 4/30/2013 @ 3:56 PM -- New BSD License
+// Copyright (C) Philip Conrad 4/30/2013 @ 3:56 PM -- MIT License
 //
 //-----------------------------------------------------------------------------
 

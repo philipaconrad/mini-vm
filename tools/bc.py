@@ -1,6 +1,6 @@
 # Name: bc.py -- simplistic bytecode packer script
 # Author: Philip Conrad on 4/30/2013 @ 2:35 PM
-# License: New BSD License OR Public Domain (Dual-Licensed)
+# License: MIT-License
 
 """
 How it works:
