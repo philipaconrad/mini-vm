@@ -3,6 +3,11 @@ mini-vm
 
 A small, register-based virtual machine (bytecode interpreter) in C.
 
+### Build
+ - For *nix: `make` and `make test`.
+ - For Windows: An MSVC 2010 Project file is provided under `/msvc`. Double click on it to generate a solution file.
+
+
 ### Documentation
  - Read `example.c` to see an example of Mini-vm in action.
  - Also worth reading: [the project's site][1]. The bytecode format and the structure of the VM are explained here.

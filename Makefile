@@ -1,12 +1,26 @@
 SHELL = /bin/sh
 .SUFFIXES:
 .SUFFIXES: .h .c .o .lib .s
-MINIVM_SOURCES = types.h minivm.h minivm.c
+SOURCES = types.h minivm.h minivm.c
+TEST_SOURCES = greatest.h
+COMPILER = gcc -Wall -Wextra
 
-all: install
+all: build
 
-install:
-	$(CC) -I. -I$(srcdir) $(CFLAGS) -g example.c $(MINIVM_SOURCES) -o mini-vm.exe
+build:
+	$(COMPILER) $(CFLAGS) -g example.c $(SOURCES) -o example
 
 clean:
-	rm mini-vm.exe
+	rm -f example
+	rm -f bytecode.txt
+	rm -f tools/bytecode.txt
+
+test: build
+	cd tools;            \
+	./bcgen-erl.sh;      \
+	cp bytecode.txt .. ; \
+	cd .. ;
+	./example bytecode.txt
+
+sloc:
+	@$(foreach srcfile, $(SOURCES), printf "%-10s : %s\n" `cat $(srcfile) | grep . | wc -l` $(srcfile);)

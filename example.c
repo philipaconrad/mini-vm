@@ -18,7 +18,7 @@ void printReg(struct VMContext* ctx, const uint32 instr);
 void loadNToReg(struct VMContext* ctx, const uint32 instr) {
     const uint8 a = EXTRACT_B1(instr);
     const uint8 b = EXTRACT_B2(instr);
-    const uint8 c = EXTRACT_B3(instr);
+  //const uint8 c = EXTRACT_B3(instr); //Not used
     ctx->r[a].value = b;
 }
 
@@ -38,8 +38,8 @@ void subReg(struct VMContext* ctx, const uint32 instr) {
 
 void printReg(struct VMContext* ctx, const uint32 instr) {
     const uint8 a = EXTRACT_B1(instr);
-    const uint8 b = EXTRACT_B2(instr);
-    const uint8 c = EXTRACT_B3(instr);
+  //const uint8 b = EXTRACT_B2(instr); //Not used
+  //const uint8 c = EXTRACT_B3(instr); //Not used
     printf("type: %d, value: %c \n", ctx->r[a].type, ctx->r[a].value);
 }
 
@@ -55,47 +55,57 @@ void initRegs(Reg* regs, uint32 numRegs) {
 }
 
 //STARTER SCRIPT:
-//Loads the value 43 ('+' in ASCII) into R2, prints it out on the command line, 
-//and then exits by setting R1 to 1.
-//                 |load '+' into R2.        |print contents of R2.   |set R1.value to 1.      |pad.
-//$ python bc.py '[(1,0),(1,2),(1,43),(1,0), (1,3),(1,2),(1,0),(1,0), (1,0),(1,1),(1,1),(1,0), (4,0)]' > bytecode.txt
+//1. load 43 ('+') to R2
+//2. print contents of R2
+//3. load 1 into R1
+//4. terminate
+//                 |1        |2       |3       |4
+//escript bc.erl "[0,2,43,0, 3,2,0,0, 0,1,1,0, 0,0,0,0]." > bytecode.txt 
 int main(int argc, char** argv) {
-    //local variables:
+    //Local variables:
     VMContext vm;
     Reg r[16];
     FunPtr funs[4];
     uint32 counter;
 
-    //bytecode-loading helper variables:
+    //Bytecode-loading helper variables:
     FILE* codeFile;
-    uint32 bytesRead;
     char buffer[256];
 
 
-    //load code:
-    codeFile = fopen("bytecode", "rb");
+    //Load code:
+    if(argc >= 1) {
+        codeFile = fopen(argv[1], "rb");
+    } else {
+        printf("USAGE: example [FILE]\n");
+        goto end; //If no bytecode provided, bail out.
+    }
     if(codeFile == NULL) {
         printf("great evil has occurred!\n");
+        goto end; //If a file read error happeneded, bail out.
     }
-    bytesRead = fread((void*)&buffer, 1, 12, codeFile); //can use 'bytesRead' to check bytecode size.
+    //fread returns the number of bytes read; we don't need 
+    //that info in this demo, however.
+    fread((void*)&buffer, 1, 12, codeFile);
+    //Close what we opened
     fclose(codeFile);
     
-    //initialize funptr table:
+    //Initialize funptr table:
     funs[0] = loadNToReg;
     funs[1] = addReg;
     funs[2] = subReg;
     funs[3] = printReg;
 
-    //initialize registers:
+    //Initialize registers:
     initRegs(r, 16);
 
-    //initialize vm context:
+    //Initialize vm context:
     initVMContext(&vm, 16, 4, r, funs);
 
-    //set code pointer in the first register slot:
+    //Set code pointer (CP) in the first register slot:
     r[0].value = (uint32)&buffer;
 
-    //main loop:
+    //Main loop:
     counter = 0;
     while(r[1].value < 1) {
         printf("running instr: %d -> '%d', '%d', '%d', '%d'\n", counter, 
@@ -108,6 +118,7 @@ int main(int argc, char** argv) {
         counter++;
     }
 
+end:
     return 0;
 }
 

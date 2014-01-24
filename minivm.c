@@ -32,12 +32,12 @@ void initVMContext(struct VMContext* ctx, const uint32 numRegs, const uint32 num
 //      and that there is another instruction to execute.
 //stepVMContext :: VMContext -> Effect()
 void stepVMContext(struct VMContext* ctx) {
-    //set up for some pointer arithmetic.
+    //Set up for some pointer arithmetic.
     uint32* ptr = &*(uint32*)ctx->r[0].value;
-    //indirection on the pointer in r0.
+    //Indirection on the pointer in r0.
     uint32 instr = *(uint32*)ctx->r[0].value;
     dispatch(ctx, instr);
-    //now the pointer arithmetic...
+    //Now the pointer arithmetic...
     ptr++;
     ctx->r[0].value = (uint32) ptr;
 }

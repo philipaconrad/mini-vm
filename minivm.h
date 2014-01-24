@@ -6,8 +6,8 @@
 
 #include "types.h"
 
-#ifndef MINIVM_H_
-#define MINIVM_H_
+#ifndef MINIVM_H
+#define MINIVM_H
 
 //---------------------------------------------------------
 // TOGGLEABLE OPTIONS AND THEIR MEANINGS:
@@ -24,14 +24,15 @@
 //Size of the global function pointer table
 #define MVM_NUM_FUNS 256
 
-#define MVM_NUM_REGISTERS 16 //default
+#define MVM_NUM_REGISTERS 16 //Default
 
 
 //---------------------------------------------------------
 // DATA STRUCTURES & TYPEDEFS:
 
+struct VMContext;
 
-//old: typedef int (*mvmfunptr)(const uint8, const uint8, const uint8);
+//Old: typedef int (*mvmfunptr)(const uint8, const uint8, const uint8);
 typedef void (*FunPtr)(struct VMContext* ctx, const uint32);
 
 //CHANGE THE INTERNALS OF THIS FOR YOUR OWN VM!
@@ -43,8 +44,8 @@ typedef struct Reg {
 typedef struct VMContext {
     uint32 numRegs;
     uint32 numFuns;
-    Reg* r; //ptr to register array.
-    FunPtr* funtable; //ptr to a funptr table.
+    Reg* r;           //Ptr to register array.
+    FunPtr* funtable; //Ptr to a funptr table.
 } VMContext;
 
 
@@ -54,8 +55,7 @@ typedef struct VMContext {
 
 #ifdef MVM_GLOBAL_FUNTABLE
 //The global function pointer table.
-static mvmfunptr mvm_function_table[MVM_NUM_FUNS];
-static mvmfunptr2 mvm_function_table2[MVM_NUM_FUNS];
+static FunPtr mvm_function_table[MVM_NUM_FUNS];
 #endif
 
 //Byte extraction macros.
@@ -83,4 +83,4 @@ void stepVMContext(struct VMContext* ctx);
 
 
 //---------------------------------------------------------
-#endif //ifndef MINIFM_H_
+#endif //ifndef MINIVM_H
