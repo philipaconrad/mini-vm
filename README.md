@@ -3,6 +3,37 @@ mini-vm
 
 A small, register-based virtual machine (bytecode interpreter) in C.
 
+
+### How it works
+Each bytecode instruction is 4 bytes long.
+
+      0   1   2   3
+    +---+---+---+---+
+    | A | B | C | D |
+    +---+---+---+---+
+
+    A - Instruction ID. This is the index of the function in the function table you wish to call.
+    B - Register #1. (usually the destination register)
+    C - Register #2. (usually an argument source register)
+    D - Register #3. (usually an argument source register)
+
+Instead of the usual switch/case-based architecture most bytecode interpreters 
+use, I chose to go with a table of function pointers whose indices correspond 
+with particular instruction IDs.
+
+An interpreter can be initialized by calling `initVMContext()` and supplying 
+the appropriate parameters.
+
+The interpreter's state has to be advanced one instruction at a time by 
+by calling `stepVMContext()` repeatedly. In the example program, this is done 
+with a simple `while` loop.
+
+Termination is not accounted for by default. In the example program I hacked 
+together an ugly but effective kludge: the `while` loop's termination condition 
+is a particular register being set to *1*. Please use a better system for 
+termination in your own designs, for example, a dedicated *exit* opcode.
+
+
 ### Build
  - For *nix: `make` and `make test`.
  - For Windows: An MSVC 2010 Project file is provided under `/msvc`. Double click on it to generate a solution file.
