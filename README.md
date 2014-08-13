@@ -35,7 +35,7 @@ termination in your own designs, for example, a dedicated *exit* opcode.
 
 
 ### Build
- - For *nix: `make` and `make test`.
+ - For 32-bit *nix: `make` and `make test`.
  - For Windows: An MSVC 2010 Project file is provided under `/msvc`. Double click on it to generate a solution file.
 
 

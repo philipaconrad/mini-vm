@@ -25,7 +25,7 @@ clean:
 
 test: build
 	cd tools;            \
-	./bcgen-erl.sh;      \
+	sh bcgen-erl.sh;      \
 	cp bytecode.txt .. ; \
 	cd .. ;
 	./example bytecode.txt
