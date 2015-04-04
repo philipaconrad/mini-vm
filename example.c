@@ -10,132 +10,121 @@
 //---------------------------------------------------------
 // EXAMPLE FUNCTIONS:
 
-void loadNToReg(struct VMContext* ctx, const uint32 instr);
-void addReg(struct VMContext* ctx, const uint32 instr);
-void subReg(struct VMContext* ctx, const uint32 instr);
-void printReg(struct VMContext* ctx, const uint32 instr);
+void loadNToReg(struct VMContext* ctx, const uint32_t instr);
+void addReg(struct VMContext* ctx, const uint32_t instr);
+void subReg(struct VMContext* ctx, const uint32_t instr);
+void printReg(struct VMContext* ctx, const uint32_t instr);
 
-void loadNToReg(struct VMContext* ctx, const uint32 instr) {
-    const uint8 a = EXTRACT_B1(instr);
-    const uint8 b = EXTRACT_B2(instr);
-  //const uint8 c = EXTRACT_B3(instr); //Not used
+
+void loadNToReg(struct VMContext* ctx, const uint32_t instr) {
+    const uint8_t a = EXTRACT_B1(instr);
+    const uint8_t b = EXTRACT_B2(instr);
+  //const uint8_t c = EXTRACT_B3(instr); //Not used
     ctx->r[a].value = b;
 }
 
-void addReg(struct VMContext* ctx, const uint32 instr) {
-    const uint8 a = EXTRACT_B1(instr);
-    const uint8 b = EXTRACT_B2(instr);
-    const uint8 c = EXTRACT_B3(instr);
+void addReg(struct VMContext* ctx, const uint32_t instr) {
+    const uint8_t a = EXTRACT_B1(instr);
+    const uint8_t b = EXTRACT_B2(instr);
+    const uint8_t c = EXTRACT_B3(instr);
     ctx->r[a].value = b + c;
 }
 
-void subReg(struct VMContext* ctx, const uint32 instr) {
-    const uint8 a = EXTRACT_B1(instr);
-    const uint8 b = EXTRACT_B2(instr);
-    const uint8 c = EXTRACT_B3(instr);
+void subReg(struct VMContext* ctx, const uint32_t instr) {
+    const uint8_t a = EXTRACT_B1(instr);
+    const uint8_t b = EXTRACT_B2(instr);
+    const uint8_t c = EXTRACT_B3(instr);
     ctx->r[a].value = b - c;
 }
 
-void printReg(struct VMContext* ctx, const uint32 instr) {
-    const uint8 a = EXTRACT_B1(instr);
-  //const uint8 b = EXTRACT_B2(instr); //Not used
-  //const uint8 c = EXTRACT_B3(instr); //Not used
+void printReg(struct VMContext* ctx, const uint32_t instr) {
+    const uint8_t a = EXTRACT_B1(instr);
+  //const uint8_t b = EXTRACT_B2(instr); //Not used
+  //const uint8_t c = EXTRACT_B3(instr); //Not used
     printf("type: %d, value: %c \n", ctx->r[a].type, ctx->r[a].value);
 }
+
 
 //---------------------------------------------------------
 // UTILITY FUNCTIONS:
 
-void initRegs(Reg* regs, uint32 numRegs) {
-    uint32 i = 0;
-    for(; i < numRegs; i++) {
+void initRegs(Reg* regs, uint32_t numRegs) {
+    uint32_t i;
+
+    for(i = 0; i < numRegs; i++) {
         regs[i].type = 0;
         regs[i].value = 0;
     }
 }
 
-//STARTER SCRIPT:
-//1. load 43 ('+') to R2
-//2. print contents of R2
-//3. load 1 into R1
-//4. terminate
-//                 |1        |2       |3       |4
-//escript bc.erl "[0,2,43,0, 3,2,0,0, 0,1,1,0, 0,0,0,0]." > bytecode.txt 
+
+// STARTER SCRIPT:
+// 1. load 43 ('+') to R2
+// 2. print contents of R2
+// 3. load 1 into R1
+// 4. terminate
+//                |1        |2       |3       |4
+// python bc.py "[0,2,43,0, 3,2,0,0, 0,1,1,0, 0,0,0,0]." > bytecode.txt 
 int main(int argc, char** argv) {
-    //Local variables:
+    // Local variables:
     VMContext vm;
-    Reg r[16];
-    FunPtr funs[4];
-    uint32 counter;
+    Reg       r[16];
+    FunPtr    funs[4];
+    uint32_t  i;
+    uint32_t* pc;      // Program-Counter (PC)
 
-    //Bytecode-loading helper variables:
-    FILE* codeFile;
-    char buffer[256];
+    // Bytecode-loading helper variables:
+    FILE* bytecodeFile;
+    char  buffer[256];
 
-
-    //Load code:
+    // Load code:
     if(argc >= 1) {
-        codeFile = fopen(argv[1], "rb");
+        bytecodeFile = fopen(argv[1], "rb");
     } else {
         printf("USAGE: example [FILE]\n");
-        goto end; //If no bytecode provided, bail out.
+        return 1; // If no bytecode provided, bail out.
     }
-    if(codeFile == NULL) {
-        printf("great evil has occurred!\n");
-        goto end; //If a file read error happeneded, bail out.
+
+    if(bytecodeFile == NULL) {
+        printf("Could not load bytecode file \'%s\'.\n", argv[1]);
+        return 1; // If a file read error happeneded, bail out.
     }
-    //fread returns the number of bytes read; we don't need 
-    //that info in this demo, however.
-    fread((void*)&buffer, 1, 12, codeFile);
-    //Close what we opened
-    fclose(codeFile);
+
+    // fread returns the number of bytes read; we don't need 
+    // that info in this demo, however.
+    fread((void*)&buffer, 1, 12, bytecodeFile);
+    // Close what we opened
+    fclose(bytecodeFile);
     
-    //Initialize funptr table:
+    // Initialize funptr table:
     funs[0] = loadNToReg;
     funs[1] = addReg;
     funs[2] = subReg;
     funs[3] = printReg;
 
-    //Initialize registers:
+    // Initialize registers:
     initRegs(r, 16);
 
-    //Initialize vm context:
+    // Initialize vm context:
     initVMContext(&vm, 16, 4, r, funs);
 
-    //Set code pointer (CP) in the first register slot:
-    r[0].value = (uint32)&buffer;
+    // Set Program Counter (PC) to start of opcode buffer:
+    pc = (uint32_t*) &buffer;
 
-    //Main loop:
-    counter = 0;
+    // Main loop:
+    i = 0;
     while(r[1].value < 1) {
-        printf("running instr: %d -> '%d', '%d', '%d', '%d'\n", counter, 
-            EXTRACT_B0(*(uint32*)r[0].value),
-            EXTRACT_B1(*(uint32*)r[0].value),
-            EXTRACT_B2(*(uint32*)r[0].value),
-            EXTRACT_B3(*(uint32*)r[0].value));
+        printf("Running instr: %d -> '%d', '%d', '%d', '%d'\n", i, 
+            EXTRACT_B0(*pc),
+            EXTRACT_B1(*pc),
+            EXTRACT_B2(*pc),
+            EXTRACT_B3(*pc));
 
-        stepVMContext(&vm);
-        counter++;
+        stepVMContext(&vm, &pc);
+        i++;
     }
 
-end:
+    // Return 0 to indicate normal termination.
     return 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
