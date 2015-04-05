@@ -5,6 +5,7 @@ A small, register-based virtual machine (bytecode interpreter) in C.
 
 
 ### How it works
+
 Each bytecode instruction is 4 bytes long.
 
       0   1   2   3
@@ -25,26 +26,27 @@ An interpreter can be initialized by calling `initVMContext()` and supplying
 the appropriate parameters.
 
 The interpreter's state has to be advanced one instruction at a time by 
-by calling `stepVMContext()` repeatedly. In the example program, this is done 
-with a simple `while` loop.
+by calling `stepVMContext()` repeatedly. In the example programs, this is 
+typically done with a simple `while` loop.
 
-Termination is not accounted for by default. In the example program I hacked 
-together an ugly but effective kludge: the `while` loop's termination condition 
-is a particular register being set to *1*. Please use a better system for 
-termination in your own designs, for example, a dedicated *exit* opcode.
+Termination is not accounted for by default. Adding a custom **halt** 
+instruction or some sort of status register are both plausible solutions.
 
 
 ### Build
- - For 32-bit *nix: `make` and `make test`.
+
+ - On *nix platforms, just type `make` to build mini-vm as a static library. To build the examples, just type `make test` in each example's directory.
  - For Windows: An MSVC 2010 Project file is provided under `/msvc`. Double click on it to generate a solution file.
 
 
 ### Documentation
- - Read `example.c` to see an example of Mini-vm in action.
+
+ - Look under the `/examples` folder to see examples of mini-vm in action.
  - Also worth reading: [the project's site][1]. The bytecode format and the structure of the VM are explained here.
 
 
 ### MIT License
+
 Copyright (c) 2013 Philip Conrad.
 All rights reserved.
 
@@ -65,5 +67,6 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
+
 
    [1]: http://philipaconrad.github.io/mini-vm/

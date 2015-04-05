@@ -4,34 +4,12 @@
 # Author:  Philip Conrad on 4/30/2013 @ 2:35 PM
 # License: MIT-License
 
-"""
-How it works:
---------------
-Provide the unsigned byte values you wish to pack as a list.
-Example:
-    byteList = [0,1,2,3, 0,0,1,2, 0,0,0,0]
-    result = assemble(byteList)
-    print "result:'" + result + "'"
-
-Output to a file:
-------------------
-Just write the assembled string out to file.
-
-Example:
-    byteList = [0,1,2,3, 0,0,1,2, 0,0,0,0]
-    result = assemble(byteList)
-    outfile = open("bytecode.bc", "w")
-    outfile.write(result)
-    outfile.flush
-    outfile.close
-"""
-
 
 import struct, sys
 from ast import literal_eval
 
 
-# example usage:
+# Example usage:
 # $ python bc.py '[0,2,43,0,  3,2,0,0,  0,1,1,0,  0,0,0,0]'
 if __name__ == '__main__':
     try:

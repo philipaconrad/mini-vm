@@ -5,7 +5,7 @@
 //-----------------------------------------------------------------------------
 
 #include <stdio.h>
-#include "minivm.h"
+#include "../../minivm.h"
 
 //---------------------------------------------------------
 // EXAMPLE FUNCTIONS:
@@ -27,14 +27,14 @@ void addReg(struct VMContext* ctx, const uint32_t instr) {
     const uint8_t a = EXTRACT_B1(instr);
     const uint8_t b = EXTRACT_B2(instr);
     const uint8_t c = EXTRACT_B3(instr);
-    ctx->r[a].value = b + c;
+    ctx->r[a].value = ctx->r[b].value + ctx->r[c].value;
 }
 
 void subReg(struct VMContext* ctx, const uint32_t instr) {
     const uint8_t a = EXTRACT_B1(instr);
     const uint8_t b = EXTRACT_B2(instr);
     const uint8_t c = EXTRACT_B3(instr);
-    ctx->r[a].value = b - c;
+    ctx->r[a].value = ctx->r[b].value - ctx->r[c].value;
 }
 
 void printReg(struct VMContext* ctx, const uint32_t instr) {

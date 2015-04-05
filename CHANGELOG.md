@@ -3,7 +3,11 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
+### Added
+- RPN calculator example.
+
 ### Changed
+- Moved examples to their own directory, `/examples`.
 
 
 ## [0.0.2] - 2015-04-04
@@ -27,6 +31,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - 64-bit build issues caused by *implicitly* 32-bit pointers in the earlier API is now resolved. (The API was changed so that the program counter's pointer does not depend on VM register size.)
+
 
 [unreleased]: https://github.com/philipaconrad/mini-vm/compare/v0.0.2...HEAD
 [0.0.2]: https://github.com/philipaconrad/mini-vm/compare/v0.0.1...v0.0.2
