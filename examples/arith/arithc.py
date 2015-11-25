@@ -20,17 +20,7 @@ def parse(expr):
             pass
         elif token.isdigit():
             out.append( int(token) )
-        elif token == '+':
-            out.append(token)
-        elif token == '-':
-            out.append(token)
-        elif token == '*':
-            out.append(token)
-        elif token == '/':
-            out.append(token)
-        elif token == '%':
-            out.append(token)
-        elif token == '?':
+        elif token in ['+', '-', '*', '/', '%', '?']:
             out.append(token)
         else:
             print "Warning: Unrecognized token: " + str(token) + "\n"
@@ -48,25 +38,9 @@ def assemble(parse_stack):
             out += [ord('$'), stack_top, item, 0]
             stack_top += 1
             i += 1
-        elif item == '+':
+        elif item in ['+', '-', '*', '/', '%']:
             stack_top -= 1
-            out += [ord('+'), stack_top-1, stack_top, stack_top-1]
-            i += 1
-        elif item == '-':
-            stack_top -= 1
-            out += [ord('-'), stack_top-1, stack_top, stack_top-1]
-            i += 1
-        elif item == '*':
-            stack_top -= 1
-            out += [ord('*'), stack_top-1, stack_top, stack_top-1]
-            i += 1
-        elif item == '/':
-            stack_top -= 1
-            out += [ord('/'), stack_top-1, stack_top, stack_top-1]
-            i += 1
-        elif item == '%':
-            stack_top -= 1
-            out += [ord('%'), stack_top-1, stack_top, stack_top-1]
+            out += [ord(item), stack_top-1, stack_top, stack_top-1]
             i += 1
         elif item == '?':
             out += [ord('?'), stack_top-1, 0, 0]
